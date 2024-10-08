@@ -1,0 +1,14 @@
+services:
+  sonar-scanner:
+    container_name: sonar-scanner
+    platform: linux/amd64
+    image: sonarsource/sonar-scanner-cli
+    volumes:
+      - .:/usr/src
+    working_dir: /usr/src
+    command: sonar-scanner
+    networks:
+      - network-jenkins
+networks:
+  network-jenkins:
+    external: true
