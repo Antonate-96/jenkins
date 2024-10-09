@@ -1,12 +1,13 @@
 pipeline {
     agent any
-    
+
     tools {nodejs "node_18_19"}
-    
+
     stages {
-        stage('Clone sources') {
+       stage('GIT PULL') {
             steps {
-                git branch: 'main', url: 'https://github.com/Antonate-96/Angular-docker.git'
+             git branch: 'main', 
+                url: 'https://github.com/Antonate-96/jenkins.git'
             }
         }
         stage('SonarQube Analysis') {
@@ -14,7 +15,7 @@ pipeline {
                 scannerHome = tool 'sonar-scan-tools';
             }  
             steps {
-                withSonarQubeEnv(credentialsId: 'b721510e-14cd-4e93-8e0f-d3ba86a527c3',installationName: 'sonarserver' ) {
+                withSonarQubeEnv(credentialsId: 'angular-project',installationName: 'sonarserver' ) {
                       sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
@@ -22,6 +23,11 @@ pipeline {
         stage("Quality gate") {
             steps {
                 waitForQualityGate abortPipeline: true
+            }
+        }
+        stage('docker build') {
+            steps {
+                sh "docker compose up -d --build"
             }
         }
     }
