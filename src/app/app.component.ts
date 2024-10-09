@@ -12,6 +12,7 @@ export class AppComponent {
   title = 'Natthaphon';
   example = {
     "systemId": "test",
+    "password": "Mypas1234",
     "userName": "test001",
     "requestData": {
       "OFFCODE": "100400",
